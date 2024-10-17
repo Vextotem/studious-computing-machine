@@ -4,7 +4,7 @@
     <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Watch Movie or TV Series</title>
+    <title>Watch Movie</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/devtools-detector/2.0.17/devtools-detector.js"></script>
     <style>
         body, html {
@@ -47,9 +47,9 @@
             return urlParams.get(name);
         }
 
-        // Function to fetch IMDb ID using TMDB ID for movies or TV series
-        async function fetchImdbId(tmdbId, type) {
-            const url = `https://api.themoviedb.org/3/${type}/${tmdbId}/external_ids?api_key=${apiKey}`;
+        // Function to fetch IMDb ID using TMDB ID for movies
+        async function fetchImdbId(tmdbId) {
+            const url = `https://api.themoviedb.org/3/movie/${tmdbId}/external_ids?api_key=${apiKey}`;
             const response = await fetch(url);
             const data = await response.json();
             return data.imdb_id;
@@ -60,23 +60,14 @@
             const loader = document.getElementById('loader');
             const videoFrame = document.getElementById('videoFrame');
             const tmdbId = getParam('id');
-            const type = getParam('type') || 'movie'; // Default to movie if not specified
-            const season = getParam('season'); // Season for TV series
-            const episode = getParam('episode'); // Episode for TV series
             
             if (tmdbId) {
                 loader.style.display = 'block';
                 try {
-                    const imdbId = await fetchImdbId(tmdbId, type);
+                    const imdbId = await fetchImdbId(tmdbId);
                     if (imdbId) {
-                        let iframeUrl = '';
-                        if (type === 'tv' && season && episode) {
-                            // For TV series, include season and episode in the iframe URL
-                            iframeUrl = `https://vidsrc.xyz/embed/tv/${tmdbId}/${imdbId}?season=${season}&episode=${episode}`;
-                        } else {
-                            // For movies
-                            iframeUrl = `https://vidsrc.xyz/embed/movie/${tmdbId}/${imdbId}`;
-                        }
+                        // For movies
+                        const iframeUrl = `https://vidsrc.xyz/embed/movie/${tmdbId}/${imdbId}`;
                         videoFrame.src = iframeUrl;
                         videoFrame.style.display = 'block';
                     } else {
