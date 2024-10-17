@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Watch Movie or TV Series</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/devtools-detector/2.0.17/devtools-detector.js"></script>
-    <script src="../../../js/protected_devtoolsdetector.js" preload></script>
-    <script src="../../../js/nocheats.js" preload></script>
     <style>
         body, html {
             margin: 0;
@@ -74,10 +72,10 @@
                         let iframeUrl = '';
                         if (type === 'tv' && season && episode) {
                             // For TV series, include season and episode in the iframe URL
-                            iframeUrl = `https://vidsrc.xyz/embed//embed/tv/${tmdbId}/${imdbId}?season=${season}&episode=${episode}`;
+                            iframeUrl = `https://vidsrc.xyz/embed/tv/${tmdbId}/${imdbId}?season=${season}&episode=${episode}`;
                         } else {
                             // For movies
-                            iframeUrl = `https://vidsrc.xyz/embed//movie/${tmdbId}/${imdbId}`;
+                            iframeUrl = `https://vidsrc.xyz/embed/movie/${tmdbId}/${imdbId}`;
                         }
                         videoFrame.src = iframeUrl;
                         videoFrame.style.display = 'block';
