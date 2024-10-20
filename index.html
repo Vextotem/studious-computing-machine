@@ -1,91 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script disable-devtool-auto src='https://cdn.jsdelivr.net/npm/disable-devtool@latest'></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Watch Movie</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/devtools-detector/2.0.17/devtools-detector.js"></script>
+    <title>Movie Embed</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" />
     <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
+        #player_iframe {
             height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #121212;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
+            width: 100%;
         }
-        #loader {
-            display: none;
+        #ad720 {
+            width: 100%;
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 1.5em;
+            bottom: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
         }
-        iframe {
+        #ad720 .ad_container {
+            max-width: 720px;
+        }
+        #ad720 .ad_container img {
             width: 100%;
-            height: 100%;
-            border: none;
+        }
+        #ad720 .ad_container #close {
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            color: white;
+            opacity: 0.7;
+        }
+        #ad720 .ad_container #close:hover {
+            opacity: 1;
+            cursor: pointer;
         }
     </style>
 </head>
-<body>
-    <div id="loader">Loading...</div>
-    <iframe id="videoFrame" src="" style="display:none;" allowfullscreen></iframe>
+<body data-i="15239678">
+
+    <div id="the_frame">
+        <iframe id="player_iframe" src="" frameborder="0" scrolling="no" allowfullscreen="yes"></iframe>
+    </div>
+
+    <div id="ad720">
+        <div class="ad_container">
+            <img src="your-ad-image.jpg" alt="Advertisement" />
+            <div id="close">×</div>
+        </div>
+    </div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script>
         const apiKey = 'f6e840332142f77746185ab4e67be858';
+        const tmdbID = '438631'; // Example TMDB ID for 'Dune: Part Two (2024)'
 
-        // Function to get URL parameter
-        function getParam(name) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(name);
-        }
+        // Fetch movie details from TMDB
+        async function fetchMovieDetails(tmdbID) {
+            const apiUrl = `https://api.themoviedb.org/3/movie/${tmdbID}?api_key=${apiKey}&language=en-US`;
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                const imdbID = data.imdb_id;
 
-        // Function to fetch IMDb ID using TMDB ID for movies
-        async function fetchImdbId(tmdbId) {
-            const url = `https://api.themoviedb.org/3/movie/${tmdbId}/external_ids?api_key=${apiKey}`;
-            const response = await fetch(url);
-            const data = await response.json();
-            return data.imdb_id;
-        }
-
-        // Main function to initialize the process
-        async function init() {
-            const loader = document.getElementById('loader');
-            const videoFrame = document.getElementById('videoFrame');
-            const tmdbId = getParam('id');
-            
-            if (tmdbId) {
-                loader.style.display = 'block';
-                try {
-                    const imdbId = await fetchImdbId(tmdbId);
-                    if (imdbId) {
-                        // For movies
-                        const iframeUrl = `https://vidsrc.xyz/embed/movie/${tmdbId}/${imdbId}`;
-                        videoFrame.src = iframeUrl;
-                        videoFrame.style.display = 'block';
-                    } else {
-                        loader.textContent = 'IMDb ID not found.';
-                    }
-                } catch (error) {
-                    loader.textContent = 'Error fetching IMDb ID.';
-                } finally {
-                    loader.style.display = 'none';
+                if (imdbID) {
+                    // Construct the embed URL using the IMDb ID
+                    var embedURL = "https://vidsrc.xyz/embed/movie?imdb=" + imdbID;
+                    document.getElementById('player_iframe').src = embedURL;
+                } else {
+                    console.error('IMDb ID not found');
                 }
-            } else {
-                loader.textContent = 'TMDB ID not provided in the URL.';
-                loader.style.display = 'block';
+            } catch (error) {
+                console.error('Error fetching movie details:', error);
             }
         }
 
-        // Initialize the script
-        init();
+        // Fetch movie details and update iframe source
+        fetchMovieDetails(tmdbID);
+
+        // Close the ad when 'close' button is clicked
+        $("#ad720 #close").click(function() {
+            $(this).parent().parent().hide();
+        });
     </script>
+
 </body>
 </html>
