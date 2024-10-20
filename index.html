@@ -6,50 +6,25 @@
     <title>Movie Embed</title>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.0-2/css/all.min.css" />
     <style>
-        #player_iframe {
+        html, body {
+            margin: 0;
+            padding: 0;
             height: 100%;
+            overflow: hidden;
+        }
+        #player_iframe {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
-        }
-        #ad720 {
-            width: 100%;
-            position: absolute;
-            bottom: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-        }
-        #ad720 .ad_container {
-            max-width: 720px;
-        }
-        #ad720 .ad_container img {
-            width: 100%;
-        }
-        #ad720 .ad_container #close {
-            position: absolute;
-            top: 3px;
-            right: 3px;
-            color: white;
-            opacity: 0.7;
-        }
-        #ad720 .ad_container #close:hover {
-            opacity: 1;
-            cursor: pointer;
+            height: 100%;
+            border: none;
         }
     </style>
 </head>
 <body>
 
-    <div id="the_frame">
-        <iframe id="player_iframe" src="" frameborder="0" scrolling="no" allowfullscreen="yes"></iframe>
-    </div>
-
-    <div id="ad720">
-        <div class="ad_container">
-            <img src="your-ad-image.jpg" alt="Advertisement" />
-            <div id="close">×</div>
-        </div>
-    </div>
+    <iframe id="player_iframe" src="" frameborder="0" scrolling="no" allowfullscreen="yes"></iframe>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -82,7 +57,7 @@
             }
         }
 
-        // Get the TMDB ID from the URL parameter 'id' (since the URL uses 'id' not 'tmdb_id')
+        // Get the TMDB ID from the URL parameter 'id'
         const tmdbID = getUrlParam('id');
         
         if (tmdbID) {
@@ -91,11 +66,6 @@
         } else {
             console.error('TMDB ID not provided in the URL');
         }
-
-        // Close the ad when 'close' button is clicked
-        $("#ad720 #close").click(function() {
-            $(this).parent().parent().hide();
-        });
     </script>
 
 </body>
