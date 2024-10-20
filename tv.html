@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV Series Embed</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        #player_iframe {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <iframe id="player_iframe" src="" frameborder="0" scrolling="no" allowfullscreen="yes"></iframe>
+
+    <script>
+        const apiKey = 'f6e840332142f77746185ab4e67be858';
+
+        // Function to get URL parameter by name
+        function getUrlParam(paramName) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(paramName);
+        }
+
+        // Fetch TV series details from TMDB using the TV show TMDB ID
+        async function fetchTvDetails(id) {
+            const apiUrl = `https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}&language=en-US`;
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                const imdbID = data.imdb_id;
+
+                if (imdbID) {
+                    // Construct the embed URL using the IMDb ID for TV series
+                    var embedURL = "https://vidsrc.xyz/embed/tv?imdb=" + imdbID;
+                    document.getElementById('player_iframe').src = embedURL;
+                } else {
+                    console.error('IMDb ID not found for TMDB ID:', id);
+                }
+            } catch (error) {
+                console.error('Error fetching TV details:', error);
+            }
+        }
+
+        // Get the TMDB TV series ID from the URL parameter 'id'
+        const tvID = getUrlParam('id');
+
+        if (tvID) {
+            // Fetch TV series details and update iframe source
+            fetchTvDetails(tvID);
+        } else {
+            console.error('TV series ID not provided in the URL');
+        }
+    </script>
+
+</body>
+</html>
