@@ -55,9 +55,14 @@
 
     <script>
         const apiKey = 'f6e840332142f77746185ab4e67be858';
-        const tmdbID = '438631'; // Example TMDB ID for 'Dune: Part Two (2024)'
 
-        // Fetch movie details from TMDB
+        // Function to get URL parameter by name
+        function getUrlParam(paramName) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(paramName);
+        }
+
+        // Fetch movie details from TMDB using the TMDB ID
         async function fetchMovieDetails(tmdbID) {
             const apiUrl = `https://api.themoviedb.org/3/movie/${tmdbID}?api_key=${apiKey}&language=en-US`;
             try {
@@ -70,15 +75,22 @@
                     var embedURL = "https://vidsrc.xyz/embed/movie?imdb=" + imdbID;
                     document.getElementById('player_iframe').src = embedURL;
                 } else {
-                    console.error('IMDb ID not found');
+                    console.error('IMDb ID not found for TMDB ID:', tmdbID);
                 }
             } catch (error) {
                 console.error('Error fetching movie details:', error);
             }
         }
 
-        // Fetch movie details and update iframe source
-        fetchMovieDetails(tmdbID);
+        // Get the TMDB ID from the URL parameter
+        const tmdbID = getUrlParam('tmdb_id');
+        
+        if (tmdbID) {
+            // Fetch movie details and update iframe source
+            fetchMovieDetails(tmdbID);
+        } else {
+            console.error('TMDB ID not provided in the URL');
+        }
 
         // Close the ad when 'close' button is clicked
         $("#ad720 #close").click(function() {
