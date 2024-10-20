@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Search Movies/TV Series</title>
+    <title>Home - Movies/TV Series</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #141414;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #141414; /* Dark background similar to Netflix */
             color: white;
             margin: 0;
             padding: 20px;
@@ -58,14 +58,15 @@
         }
 
         .result-item {
-            background-color: #333;
-            border-radius: 5px;
+            position: relative;
             overflow: hidden;
-            transition: transform 0.2s;
+            border-radius: 5px;
+            transition: transform 0.3s, box-shadow 0.3s;
         }
 
         .result-item:hover {
             transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
         }
 
         .result-item img {
@@ -86,6 +87,24 @@
             padding: 20px;
             font-size: 18px;
         }
+
+        /* Style for the popular movies section */
+        .popular-section {
+            margin-top: 20px;
+        }
+
+        .popular-title {
+            font-size: 24px;
+            margin-bottom: 10px;
+            padding-left: 10px;
+            border-left: 5px solid #e50914;
+        }
+
+        #popular-movies-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
     </style>
 </head>
 <body>
@@ -98,8 +117,8 @@
     
     <div id="results"></div>
 
-    <div id="popular-movies">
-        <h2>Popular Recent Movies</h2>
+    <div id="popular-movies" class="popular-section">
+        <h2 class="popular-title">Popular Recent Movies</h2>
         <div id="popular-movies-container"></div>
     </div>
 
