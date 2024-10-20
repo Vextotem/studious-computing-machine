@@ -38,7 +38,7 @@
         }
     </style>
 </head>
-<body data-i="15239678">
+<body>
 
     <div id="the_frame">
         <iframe id="player_iframe" src="" frameborder="0" scrolling="no" allowfullscreen="yes"></iframe>
@@ -82,8 +82,8 @@
             }
         }
 
-        // Get the TMDB ID from the URL parameter
-        const tmdbID = getUrlParam('tmdb_id');
+        // Get the TMDB ID from the URL parameter 'id' (since the URL uses 'id' not 'tmdb_id')
+        const tmdbID = getUrlParam('id');
         
         if (tmdbID) {
             // Fetch movie details and update iframe source
